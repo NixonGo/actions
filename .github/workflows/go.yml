@@ -1,20 +1,45 @@
-            - name: Setup Go environment
-  uses: actions/setup-go@v6.4.0
+            - name: Run golangci-lint with reviewdog
+  # You may pin to the exact commit or the version.
+  # uses: reviewdog/action-golangci-lint@c76cceaaab89abe74e649d2e34c6c9adc26662d2
+  uses: reviewdog/action-golangci-lint@v2.10.0
   with:
-    # The Go version to download (if necessary) and use. Supports semver spec and ranges. Be sure to enclose this option in single quotation marks.
-    go-version: # optional
-    # Path to the go.mod, go.work, .go-version, or .tool-versions file.
-    go-version-file: # optional
-    # Set this option to true if you want the action to always check for the latest available version that satisfies the version spec
-    check-latest: # optional
-    # Used to pull Go distributions from go-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
-    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
-    # Used to specify whether caching is needed. Set to true, if you'd like to enable caching.
+    # GITHUB_TOKEN.
+    github_token: # default is ${{ github.token }}
+    # golangci-lint flags. (golangci-lint run --out-format=line-number <golangci_lint_flags>)
+    golangci_lint_flags: # optional, default is 
+    # Tool name to use for reviewdog reporter
+    tool_name: # optional, default is golangci
+    # Report level for reviewdog [info,warning,error]
+    level: # optional, default is error
+    # Reporter of reviewdog command [github-pr-check,github-pr-review,github-check].
+    reporter: # optional, default is github-pr-check
+    # Filtering for the reviewdog command [added,diff_context,file,nofilter].
+Default is added.
+
+    filter_mode: # optional, default is added
+    # If set to `none`, always use exit code 0 for reviewdog.
+Otherwise, exit code 1 for reviewdog if it finds at least 1 issue with severity greater than or equal to the given level.
+Possible values: [none,any,info,warning,error]
+Default is `none`.
+
+    fail_level: # optional, default is none
+    # Deprecated, use `fail_level` instead.
+Exit code for reviewdog when errors are found [true,false]
+Default is `false`.
+
+    fail_on_error: # optional, default is false
+    # Additional reviewdog flags
+    reviewdog_flags: # optional, default is 
+    # Working directory relative to the root directory.
+    workdir: # optional, default is .
+    # the version of reviewdog
+    reviewdog_version: # optional, default is latest
+    # the version of golangci-lint
+    golangci_lint_version: # optional, default is latest
+    # the version of Go. By default, the latest version of Go 1.x is installed.
+    go_version: # optional
+    # Path to the go.mod file or the file containing only Go version.
+    go_version_file: # optional
+    # enable cache
     cache: # optional, default is true
-    # Used to specify the path to a dependency file (e.g., go.mod, go.sum)
-    cache-dependency-path: # optional
-    # Target architecture for Go to use. Examples: x86, x64. Will use system architecture by default.
-    architecture: # optional
-    # Custom base URL for downloading Go distributions. Use this to download Go from a mirror or custom source. Defaults to "https://go.dev/dl". Can also be set via the GO_DOWNLOAD_BASE_URL environment variable. The input takes precedence over the environment variable.
-    go-download-base-url: # optional
           
